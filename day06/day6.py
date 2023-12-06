@@ -1,23 +1,18 @@
+import functools
 import math
 
 with open('input_06.txt', 'r') as fin:
     INPUT = fin.read().strip().splitlines()
 
+# Part 1: Brute Force
 TIMES = list(map(int, INPUT[0].split()[1:]))
 RECORDS = list(map(int, INPUT[1].split()[1:]))
 
-# Leaving my brute-force impl for part1 for illustrative purposes
-part1 = 1
-for i, r in enumerate(RECORDS):
-    time = TIMES[i]
-    opts = 0
-    for t in range(1, time):
-        d = t * (time - t)
-        if d > r:
-            opts += 1
-    part1 *= opts
+def mul(p, tr):
+    L, R = tr
+    return p * len([t*(L-t) for t in range(1, L) if t*(L-t) > R])
 
-print(part1)
+print(functools.reduce(mul, zip(TIMES, RECORDS), 1))
 
 # Part 2: Quadratic formula
 #
